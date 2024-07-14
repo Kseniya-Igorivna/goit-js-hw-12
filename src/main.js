@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hideLoading();
             clearGallery();
             showError('Failed to fetch images. Please try again later.');
+            loadMoreButton.style.display = 'none';
         }
     });
 
@@ -50,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.hits.length === 0 || data.hits.length < 15) {
                 loadMoreButton.style.display = 'none';
                 showError("We're sorry, but you've reached the end of search results.");
+            }else {
+                renderGallery(data.hits, true);
             }
-            renderGallery(data.hits, true);
         } catch (error) {
             hideLoading();
             showError('Failed to fetch images. Please try again later.');
+            loadMoreButton.style.display = 'none';
         }
     });
 });
