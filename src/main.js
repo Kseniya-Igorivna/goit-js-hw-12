@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearGallery();
             if (data.hits.length === 0) {
                 showError('Sorry, there are no images matching your search query. Please try again!');
+                loadMoreButton.style.display = 'none';
             } else {
                 renderGallery(data.hits);
                 input.value = '';
@@ -48,11 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
             showLoading();
             const data = await fetchImages(query, page);
             hideLoading();
-            if (data.hits.length === 0 || data.hits.length < 15) {
+            if (data.hits.length > 0) {
+                renderGallery(data.hits, true);
+                if (data.hits.length < 15) {
+                    loadMoreButton.style.display = 'none';
+                    showError("We're sorry, but you've reached the end of search results.");
+                }
+            } else {
                 loadMoreButton.style.display = 'none';
                 showError("We're sorry, but you've reached the end of search results.");
-            }else {
-                renderGallery(data.hits, true);
             }
         } catch (error) {
             hideLoading();
